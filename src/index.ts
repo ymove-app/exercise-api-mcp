@@ -69,7 +69,7 @@ const server = new McpServer({
 
 server.tool(
   'search_exercises',
-  'Search and filter exercises from the YMove exercise database (680+ exercises with HD videos). Filter by muscle group, equipment, difficulty, exercise type, or search by name.',
+  'Search and filter exercises from the YMove exercise database (680+ exercises with HD videos). Filter by muscle group, equipment, difficulty, exercise type, or search by name. Note: most exercise videos are PORTRAIT (vertical, ~9:16), shot for mobile - build any video UI as a portrait player (aspect-ratio 9/16, object-fit cover), not landscape. Each video carries an "orientation" field.',
   {
     muscleGroup: z.enum(['chest', 'back', 'shoulders', 'biceps', 'triceps', 'forearms', 'quads', 'hamstrings', 'glutes', 'calves', 'core', 'full_body']).optional().describe('Filter by target muscle group'),
     equipment: z.enum(['machine', 'barbell', 'dumbbell', 'kettlebell', 'bodyweight', 'cable']).optional().describe('Filter by equipment type'),
@@ -97,6 +97,7 @@ server.tool(
       description: ex.description,
       videoUrl: ex.videoUrl,
       thumbnailUrl: ex.thumbnailUrl,
+      orientation: ex.videos?.[0]?.orientation ?? 'portrait',
     }));
     return {
       content: [{
@@ -109,7 +110,7 @@ server.tool(
 
 server.tool(
   'get_exercise',
-  'Get detailed information about a specific exercise by slug or ID, including video URLs, instructions, and muscle data.',
+  'Get detailed information about a specific exercise by slug or ID, including video URLs, instructions, and muscle data. Videos are usually PORTRAIT (vertical, ~9:16) - check each video\'s "orientation" field and render in a portrait player (aspect-ratio 9/16, object-fit cover), not landscape.',
   {
     idOrSlug: z.string().describe('Exercise slug (e.g., "barbell-squat") or UUID'),
   },
