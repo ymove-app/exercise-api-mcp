@@ -1,6 +1,6 @@
 # ymove-exercise-mcp
 
-MCP (Model Context Protocol) server for the [YMove Exercise Video API](https://ymove.app/exercise-api). Use 680+ HD exercise videos, workout generation, and program building directly from Claude.
+MCP (Model Context Protocol) server for the [YMove Exercise Video API](https://ymove.app/exercise-api). Use 1371+ HD exercise videos, workout generation, and program building directly from Claude.
 
 ## Setup
 
