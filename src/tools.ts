@@ -2,7 +2,7 @@
 // runs tsc (and next build) out of memory. tsup builds this file without a
 // type check, and the tools are exercised at runtime against the live API.
 /**
- * YMove Exercise API - MCP tool definitions
+ * Your Move Exercise API - MCP tool definitions
  *
  * Shared by both ways of running the server:
  * - index.ts: local stdio server, published to npm as ymove-exercise-mcp
@@ -59,7 +59,7 @@ export function registerTools(server: ToolServer, { apiKey, baseUrl = DEFAULT_BA
 
   server.tool(
     'search_exercises',
-    'Search and filter exercises from the YMove exercise database (1,413+ exercises with HD videos). Filter by muscle group, equipment, difficulty, exercise type, or search by name. Note: most exercise videos are PORTRAIT (vertical, ~9:16), shot for mobile - build any video UI as a portrait player (aspect-ratio 9/16, object-fit cover), not landscape. Each video carries an "orientation" field.',
+    'Search and filter exercises from the Your Move exercise database (1,413+ exercises with HD videos). Filter by muscle group, equipment, difficulty, exercise type, or search by name. Note: most exercise videos are PORTRAIT (vertical, ~9:16), shot for mobile - build any video UI as a portrait player (aspect-ratio 9/16, object-fit cover), not landscape. Each video carries an "orientation" field.',
     {
       muscleGroup: z.enum(['chest', 'back', 'shoulders', 'biceps', 'triceps', 'forearms', 'quads', 'hamstrings', 'glutes', 'calves', 'core', 'full_body']).optional().describe('Filter by target muscle group'),
       equipment: z.enum(['machine', 'barbell', 'dumbbell', 'kettlebell', 'bodyweight', 'cable']).optional().describe('Filter by equipment type'),
@@ -70,6 +70,7 @@ export function registerTools(server: ToolServer, { apiKey, baseUrl = DEFAULT_BA
       page: z.number().optional().describe('Page number (default: 1)'),
       pageSize: z.number().optional().describe('Results per page (default: 20, max: 50)'),
     },
+    { title: 'Search exercises', readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
     async (params) => {
       const query = Object.entries(params)
         .filter(([, v]) => v !== undefined)
@@ -104,6 +105,7 @@ export function registerTools(server: ToolServer, { apiKey, baseUrl = DEFAULT_BA
     {
       idOrSlug: z.string().describe('Exercise slug (e.g., "barbell-squat") or UUID'),
     },
+    { title: 'Get exercise', readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
     async ({ idOrSlug }) => {
       const result = await apiGet(`/exercises/${encodeURIComponent(idOrSlug)}`);
       return {
@@ -124,6 +126,7 @@ export function registerTools(server: ToolServer, { apiKey, baseUrl = DEFAULT_BA
       difficulty: z.enum(['beginner', 'intermediate', 'advanced']).optional().describe('Difficulty level (default: intermediate)'),
       exerciseCount: z.number().min(3).max(12).optional().describe('Number of exercises (default: 6)'),
     },
+    { title: 'Generate workout', readOnlyHint: true, destructiveHint: false, idempotentHint: false, openWorldHint: false },
     async (params) => {
       const query = Object.entries(params)
         .filter(([, v]) => v !== undefined)
@@ -148,6 +151,7 @@ export function registerTools(server: ToolServer, { apiKey, baseUrl = DEFAULT_BA
       weeks: z.enum(['4', '8', '12']).optional().describe('Program duration in weeks (default: 4)'),
       equipment: z.enum(['machine', 'barbell', 'dumbbell', 'kettlebell', 'bodyweight', 'cable']).optional().describe('Limit to specific equipment'),
     },
+    { title: 'Generate training program', readOnlyHint: true, destructiveHint: false, idempotentHint: false, openWorldHint: false },
     async (params) => {
       const query = Object.entries(params)
         .filter(([, v]) => v !== undefined)
@@ -167,6 +171,7 @@ export function registerTools(server: ToolServer, { apiKey, baseUrl = DEFAULT_BA
     'list_muscle_groups',
     'List all available muscle groups with the number of exercises in each.',
     {},
+    { title: 'List muscle groups', readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
     async () => {
       const result = await apiGet('/exercises/muscle-groups');
       return {
@@ -182,6 +187,7 @@ export function registerTools(server: ToolServer, { apiKey, baseUrl = DEFAULT_BA
     'list_exercise_types',
     'List all exercise types (strength, yoga, cardio, etc.) with counts.',
     {},
+    { title: 'List exercise types', readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
     async () => {
       const result = await apiGet('/exercises/exercise-types');
       return {
@@ -204,6 +210,7 @@ export function registerTools(server: ToolServer, { apiKey, baseUrl = DEFAULT_BA
       page: z.number().optional().describe('Page number (default: 1)'),
       pageSize: z.number().optional().describe('Results per page (default: 20, max: 50)'),
     },
+    { title: 'Search foods', readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
     async (params) => {
       const query = Object.entries(params)
         .filter(([, v]) => v !== undefined)
@@ -225,6 +232,7 @@ export function registerTools(server: ToolServer, { apiKey, baseUrl = DEFAULT_BA
     {
       id: z.string().describe('Food UUID'),
     },
+    { title: 'Get food', readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
     async ({ id }) => {
       const result = await apiGet(`/foods/${encodeURIComponent(id)}`);
       return {
@@ -242,6 +250,7 @@ export function registerTools(server: ToolServer, { apiKey, baseUrl = DEFAULT_BA
     {
       upc: z.string().describe('Product barcode (UPC or EAN)'),
     },
+    { title: 'Barcode lookup', readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
     async ({ upc }) => {
       const result = await apiGet(`/foods/barcode/${encodeURIComponent(upc)}`);
       return {
@@ -262,6 +271,7 @@ export function registerTools(server: ToolServer, { apiKey, baseUrl = DEFAULT_BA
         quantityG: z.number().optional().describe('Quantity in grams'),
       })).describe('List of foods with quantities'),
     },
+    { title: 'Calculate meal nutrition', readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
     async ({ items }) => {
       const result = await apiPost('/meals/calculate', { items });
       return {
@@ -279,6 +289,7 @@ export function registerTools(server: ToolServer, { apiKey, baseUrl = DEFAULT_BA
     {
       text: z.string().describe('Description of food or meal (e.g. "grilled chicken with rice and broccoli")'),
     },
+    { title: 'Analyze food text', readOnlyHint: true, destructiveHint: false, idempotentHint: false, openWorldHint: false },
     async ({ text }) => {
       const result = await apiPost('/foods/log/text', { text });
       return {
@@ -303,6 +314,7 @@ export function registerTools(server: ToolServer, { apiKey, baseUrl = DEFAULT_BA
       page: z.number().optional().describe('Page number (default: 1)'),
       pageSize: z.number().optional().describe('Results per page (default: 20, max: 50)'),
     },
+    { title: 'Search recipes', readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
     async (params) => {
       const query = Object.entries(params)
         .filter(([, v]) => v !== undefined)
@@ -324,6 +336,7 @@ export function registerTools(server: ToolServer, { apiKey, baseUrl = DEFAULT_BA
     {
       idOrSlug: z.string().describe('Recipe UUID or slug (e.g. "high-protein-chicken-bowl")'),
     },
+    { title: 'Get recipe', readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
     async ({ idOrSlug }) => {
       const result = await apiGet(`/recipes/${encodeURIComponent(idOrSlug)}`);
       return {
