@@ -38,7 +38,7 @@ if (!API_KEY) {
 
 const server = new McpServer({
   name: 'ymove-exercise-api',
-  version: '1.1.0',
+  version: '1.1.1',
 });
 
 registerTools(server, { apiKey: API_KEY, baseUrl: BASE });
