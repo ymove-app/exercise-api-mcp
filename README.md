@@ -1,8 +1,29 @@
 # ymove-exercise-mcp
 
-MCP (Model Context Protocol) server for the [YMove Exercise Video API](https://ymove.app/exercise-api). Use 1371+ HD exercise videos, workout generation, and program building directly from Claude.
+MCP (Model Context Protocol) server for the [YMove Exercise Video API](https://ymove.app/exercise-api). Use 1,413+ HD exercise videos, workout generation, and program building directly from Claude.
 
 ## Setup
+
+### Hosted (no install)
+
+Clients that support remote MCP servers can connect to the hosted endpoint directly. Send your API key in the `X-API-Key` header.
+
+```bash
+claude mcp add --transport http ymove https://exercise-api.ymove.app/mcp --header "X-API-Key: your_api_key"
+```
+
+Cursor (`.cursor/mcp.json`):
+
+```json
+{
+  "mcpServers": {
+    "ymove": {
+      "url": "https://exercise-api.ymove.app/mcp",
+      "headers": { "X-API-Key": "your_api_key" }
+    }
+  }
+}
+```
 
 ### Claude Desktop
 
@@ -22,12 +43,10 @@ Add to your `claude_desktop_config.json`:
 }
 ```
 
-### Claude Code
+### Claude Code (local)
 
 ```bash
-claude mcp add ymove -- npx ymove-exercise-mcp
-# Then set your API key in the environment
-export YMOVE_API_KEY=your_api_key
+claude mcp add ymove -e YMOVE_API_KEY=your_api_key -- npx ymove-exercise-mcp
 ```
 
 Get your API key from the docs at [ymove.app/exercise-api](https://ymove.app/exercise-api) (free trial).
@@ -36,7 +55,7 @@ Get your API key from the docs at [ymove.app/exercise-api](https://ymove.app/exe
 
 | Tool | Description |
 |------|-------------|
-| `search_exercises` | Search and filter 680+ exercises by muscle group, equipment, difficulty, type |
+| `search_exercises` | Search and filter 1,413+ exercises by muscle group, equipment, difficulty, type |
 | `get_exercise` | Get detailed exercise info with video URLs, instructions, muscles |
 | `generate_workout` | Generate a structured workout with sets, reps, and rest times |
 | `generate_program` | Generate a multi-week training program with periodization |
