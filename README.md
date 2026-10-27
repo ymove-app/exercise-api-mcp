@@ -1,6 +1,6 @@
 # ymove-exercise-mcp
 
-MCP (Model Context Protocol) server for the [YMove Exercise Video API](https://ymove.app/exercise-api). Use 1,413+ HD exercise videos, workout generation, and program building directly from Claude.
+MCP (Model Context Protocol) server for the [YMove Exercise Video API](https://ymove.app/exercise-api). Use 2,000+ HD exercise videos, workout generation, and program building directly from Claude.
 
 ## Setup
 
@@ -55,7 +55,7 @@ Get your API key from the docs at [ymove.app/exercise-api](https://ymove.app/exe
 
 | Tool | Description |
 |------|-------------|
-| `search_exercises` | Search and filter 1,413+ exercises by muscle group, equipment, difficulty, type |
+| `search_exercises` | Search and filter 2,000+ exercises by muscle group, equipment, difficulty, type |
 | `get_exercise` | Get detailed exercise info with video URLs, instructions, muscles |
 | `generate_workout` | Generate a structured workout with sets, reps, and rest times |
 | `generate_program` | Generate a multi-week training program with periodization |
