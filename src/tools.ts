@@ -59,7 +59,7 @@ export function registerTools(server: ToolServer, { apiKey, baseUrl = DEFAULT_BA
 
   server.tool(
     'search_exercises',
-    'Search and filter exercises from the Your Move exercise database (2,000+ exercises with HD videos). Filter by muscle group, equipment, difficulty, exercise type, or search by name. Note: most exercise videos are PORTRAIT (vertical, ~9:16), shot for mobile - build any video UI as a portrait player (aspect-ratio 9/16, object-fit cover), not landscape. Each video carries an "orientation" field.',
+    'Search and filter exercises from the Your Move exercise database (2,005+ exercises with HD videos). Filter by muscle group, equipment, difficulty, exercise type, or search by name. Note: most exercise videos are PORTRAIT (vertical, ~9:16), shot for mobile - build any video UI as a portrait player (aspect-ratio 9/16, object-fit cover), not landscape. Each video carries an "orientation" field.',
     {
       muscleGroup: z.enum(['chest', 'back', 'shoulders', 'biceps', 'triceps', 'forearms', 'quads', 'hamstrings', 'glutes', 'calves', 'core', 'full_body']).optional().describe('Filter by target muscle group'),
       equipment: z.enum(['machine', 'barbell', 'dumbbell', 'kettlebell', 'bodyweight', 'cable']).optional().describe('Filter by equipment type'),
